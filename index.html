@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="לוח שנה" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="theme-color" content="#534AB7" />
+<link rel="manifest" href="manifest.json" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%236A60D4'/%3E%3Cstop offset='1' stop-color='%234A40A8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='42' fill='url(%23bg)'/%3E%3Crect x='28' y='44' width='112' height='100' rx='14' fill='%23fff'/%3E%3Crect x='28' y='44' width='112' height='30' rx='14' fill='%233C3489'/%3E%3Crect x='28' y='60' width='112' height='14' fill='%233C3489'/%3E%3Crect x='50' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Crect x='109' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Cg fill='%23D7D5EC'%3E%3Ccircle cx='50' cy='94' r='5'/%3E%3Ccircle cx='71' cy='94' r='5'/%3E%3Ccircle cx='92' cy='94' r='5'/%3E%3Ccircle cx='113' cy='94' r='5'/%3E%3Ccircle cx='50' cy='116' r='5'/%3E%3Ccircle cx='71' cy='116' r='5'/%3E%3Ccircle cx='92' cy='116' r='5'/%3E%3C/g%3E%3Ccircle cx='138' cy='132' r='31' fill='url(%23bg)'/%3E%3Ccircle cx='138' cy='132' r='26' fill='%23E08A2B'/%3E%3Cpath d='M138 117c-8.5 0-14 5.5-14 15 0 6-1.5 9-4 11.5-1 1-0.3 2.8 1.1 2.8h33.8c1.4 0 2.1-1.8 1.1-2.8-2.5-2.5-4-5.5-4-11.5 0-9.5-5.5-15-14-15z' fill='%23fff'/%3E%3Ccircle cx='138' cy='115.5' r='3.2' fill='%23fff'/%3E%3Cpath d='M132.5 149a5.5 5.5 0 0011 0z' fill='%23fff'/%3E%3C/svg%3E" />
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%236A60D4'/%3E%3Cstop offset='1' stop-color='%234A40A8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='42' fill='url(%23bg)'/%3E%3Crect x='28' y='44' width='112' height='100' rx='14' fill='%23fff'/%3E%3Crect x='28' y='44' width='112' height='30' rx='14' fill='%233C3489'/%3E%3Crect x='28' y='60' width='112' height='14' fill='%233C3489'/%3E%3Crect x='50' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Crect x='109' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Cg fill='%23D7D5EC'%3E%3Ccircle cx='50' cy='94' r='5'/%3E%3Ccircle cx='71' cy='94' r='5'/%3E%3Ccircle cx='92' cy='94' r='5'/%3E%3Ccircle cx='113' cy='94' r='5'/%3E%3Ccircle cx='50' cy='116' r='5'/%3E%3Ccircle cx='71' cy='116' r='5'/%3E%3Ccircle cx='92' cy='116' r='5'/%3E%3C/g%3E%3Ccircle cx='138' cy='132' r='31' fill='url(%23bg)'/%3E%3Ccircle cx='138' cy='132' r='26' fill='%23E08A2B'/%3E%3Cpath d='M138 117c-8.5 0-14 5.5-14 15 0 6-1.5 9-4 11.5-1 1-0.3 2.8 1.1 2.8h33.8c1.4 0 2.1-1.8 1.1-2.8-2.5-2.5-4-5.5-4-11.5 0-9.5-5.5-15-14-15z' fill='%23fff'/%3E%3Ccircle cx='138' cy='115.5' r='3.2' fill='%23fff'/%3E%3Cpath d='M132.5 149a5.5 5.5 0 0011 0z' fill='%23fff'/%3E%3C/svg%3E" />
 <title>לוח שנה ותזכורות — אבידן קוטאי</title>
@@ -132,6 +133,7 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
     <span class="topbar-title">לוח שנה</span>
     <div class="filter-bar" id="filter-bar"></div>
     <button class="tbtn" onclick="triggerTest()">&#128276; בדוק התראה</button>
+    <button class="tbtn" id="push-btn" onclick="enableNotifications()">&#128276; הפעל התראות</button>
     <button class="tbtn" onclick="exportData()">&#128229; גיבוי</button>
     <label class="file-lbl">&#128228; שחזור<input type="file" accept=".json" onchange="importData(event)" style="display:none" /></label>
     <button class="tbtn reset-btn" onclick="openReset()">&#128465; מחיקה</button>
@@ -276,6 +278,12 @@ const MONTHS=['ינואר','פברואר','מרץ','אפריל','מאי','יונ
 const RLBL={none:'חד פעמי',daily:'יומי',weekly:'שבועי',monthly:'חודשי',yearly:'שנתי'};
 const SEMOJI={annoying:'😱',beep:'🔔',gentle:'🎵',alarm:'🚨',none:'🔇'};
 
+/* ===== הגדרות PUSH (התראות גם כשהאפליקציה סגורה) ===== */
+/* ←← אחרי פריסת ה-Worker ב-Cloudflare, הדבק כאן את הכתובת שלו (בלי / בסוף) */
+const PUSH_WORKER_URL='https://YOUR-WORKER.workers.dev';
+const VAPID_PUBLIC='BOcUhkCknXhoxOsfmBagBtTYrfIy6Kp3x0VANlcgswRL5ExYfrMIcnZSvP7RyPWj6DmAee_WKaJ-dyWTQVSJluo';
+let pushSub=null;
+
 let today=new Date();
 let cur={year:today.getFullYear(),month:today.getMonth()};
 let selDate=null,selColorVal='purple',selRecurVal='none',selSoundVal='annoying';
@@ -300,6 +308,7 @@ function parseDate(s){let[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,
 var LS_KEY='avidan-calendar-v1';
 function saveLS(){
   try{localStorage.setItem(LS_KEY,JSON.stringify({reminders:reminders,nextId:nextId}));}catch(e){}
+  if(typeof syncPush==='function')syncPush();
 }
 function loadLS(){
   try{
@@ -454,6 +463,52 @@ function confirmReset(){
 }
 document.getElementById('reset-overlay').onclick=function(e){if(e.target===this)closeReset();};
 
+/* ===== PUSH NOTIFICATIONS (גם כשהאפליקציה סגורה) ===== */
+function urlB64ToUint8Array(s){
+  var pad='='.repeat((4-s.length%4)%4),b=(s+pad).replace(/-/g,'+').replace(/_/g,'/');
+  var raw=atob(b),out=new Uint8Array(raw.length);
+  for(var i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);
+  return out;
+}
+function updatePushBtn(){
+  var btn=document.getElementById('push-btn');if(!btn)return;
+  if(pushSub){btn.innerHTML='&#128276; התראות פעילות';btn.style.color='#1D9E75';btn.style.borderColor='#A6DBC8';}
+  else{btn.innerHTML='&#128276; הפעל התראות';btn.style.color='';btn.style.borderColor='';}
+}
+async function enableNotifications(){
+  if(!('serviceWorker' in navigator)||!('PushManager' in window)){
+    alert('הדפדפן לא תומך בהתראות Push.\n\nבאייפון: הוסף תחילה את האפליקציה למסך הבית (כפתור שיתוף ← הוסף למסך הבית), פתח אותה משם, ורק אז הפעל התראות.');
+    return;
+  }
+  if(PUSH_WORKER_URL.indexOf('YOUR-WORKER')>=0){
+    alert('עדיין לא הוגדרה כתובת השרת (PUSH_WORKER_URL) בקובץ. ראה את מדריך ההתקנה SETUP_PUSH.md.');
+    return;
+  }
+  try{
+    var perm=await Notification.requestPermission();
+    if(perm!=='granted'){alert('לא ניתנה הרשאה להתראות. ניתן לאשר בהגדרות הדפדפן.');return;}
+    var reg=await navigator.serviceWorker.ready;
+    pushSub=await reg.pushManager.getSubscription();
+    if(!pushSub){
+      pushSub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64ToUint8Array(VAPID_PUBLIC)});
+    }
+    await syncPush();
+    await fetch(PUSH_WORKER_URL+'/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:pushSub})});
+    updatePushBtn();
+    toast('התראות הופעלו! נשלחה התראת בדיקה');
+  }catch(e){alert('שגיאה בהפעלת התראות: '+(e&&e.message?e.message:e));}
+}
+async function syncPush(){
+  if(!pushSub){
+    try{var reg=await navigator.serviceWorker.ready;pushSub=await reg.pushManager.getSubscription();}catch(e){}
+  }
+  if(!pushSub||PUSH_WORKER_URL.indexOf('YOUR-WORKER')>=0)return;
+  try{
+    await fetch(PUSH_WORKER_URL+'/save',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({subscription:pushSub,reminders:reminders,tz:Intl.DateTimeFormat().resolvedOptions().timeZone})});
+  }catch(e){}
+}
+
 /* ===== CALENDAR ===== */
 function getOccurrences(r,year,month){
   var dates=[],base=parseDate(r.date);
@@ -600,6 +655,19 @@ function checkNotifications(){
 function render(){renderFilterBar();renderGrid();renderSidebar();}
 render();
 setInterval(checkNotifications,30000);
+
+/* ===== SERVICE WORKER + PUSH INIT ===== */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(function(){
+    return navigator.serviceWorker.ready;
+  }).then(function(reg){
+    return reg.pushManager.getSubscription();
+  }).then(function(sub){
+    pushSub=sub||null;
+    if(pushSub)syncPush();
+    updatePushBtn();
+  }).catch(function(){});
+}
 
 /* ===== PWA INSTALL BANNER ===== */
 function isIOS(){return/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.MSStream;}

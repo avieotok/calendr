@@ -1,0 +1,16 @@
+{
+  "name": "לוח שנה ותזכורות — אבידן קוטאי",
+  "short_name": "לוח שנה",
+  "description": "לוח שנה ותזכורות עם התראות",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f3f0",
+  "theme_color": "#534AB7",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
