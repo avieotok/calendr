@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="לוח שנה" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="theme-color" content="#534AB7" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%236A60D4'/%3E%3Cstop offset='1' stop-color='%234A40A8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='42' fill='url(%23bg)'/%3E%3Crect x='28' y='44' width='112' height='100' rx='14' fill='%23fff'/%3E%3Crect x='28' y='44' width='112' height='30' rx='14' fill='%233C3489'/%3E%3Crect x='28' y='60' width='112' height='14' fill='%233C3489'/%3E%3Crect x='50' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Crect x='109' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Cg fill='%23D7D5EC'%3E%3Ccircle cx='50' cy='94' r='5'/%3E%3Ccircle cx='71' cy='94' r='5'/%3E%3Ccircle cx='92' cy='94' r='5'/%3E%3Ccircle cx='113' cy='94' r='5'/%3E%3Ccircle cx='50' cy='116' r='5'/%3E%3Ccircle cx='71' cy='116' r='5'/%3E%3Ccircle cx='92' cy='116' r='5'/%3E%3C/g%3E%3Ccircle cx='138' cy='132' r='31' fill='url(%23bg)'/%3E%3Ccircle cx='138' cy='132' r='26' fill='%23E08A2B'/%3E%3Cpath d='M138 117c-8.5 0-14 5.5-14 15 0 6-1.5 9-4 11.5-1 1-0.3 2.8 1.1 2.8h33.8c1.4 0 2.1-1.8 1.1-2.8-2.5-2.5-4-5.5-4-11.5 0-9.5-5.5-15-14-15z' fill='%23fff'/%3E%3Ccircle cx='138' cy='115.5' r='3.2' fill='%23fff'/%3E%3Cpath d='M132.5 149a5.5 5.5 0 0011 0z' fill='%23fff'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%236A60D4'/%3E%3Cstop offset='1' stop-color='%234A40A8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='42' fill='url(%23bg)'/%3E%3Crect x='28' y='44' width='112' height='100' rx='14' fill='%23fff'/%3E%3Crect x='28' y='44' width='112' height='30' rx='14' fill='%233C3489'/%3E%3Crect x='28' y='60' width='112' height='14' fill='%233C3489'/%3E%3Crect x='50' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Crect x='109' y='32' width='9' height='24' rx='4.5' fill='%23EEEDFE'/%3E%3Cg fill='%23D7D5EC'%3E%3Ccircle cx='50' cy='94' r='5'/%3E%3Ccircle cx='71' cy='94' r='5'/%3E%3Ccircle cx='92' cy='94' r='5'/%3E%3Ccircle cx='113' cy='94' r='5'/%3E%3Ccircle cx='50' cy='116' r='5'/%3E%3Ccircle cx='71' cy='116' r='5'/%3E%3Ccircle cx='92' cy='116' r='5'/%3E%3C/g%3E%3Ccircle cx='138' cy='132' r='31' fill='url(%23bg)'/%3E%3Ccircle cx='138' cy='132' r='26' fill='%23E08A2B'/%3E%3Cpath d='M138 117c-8.5 0-14 5.5-14 15 0 6-1.5 9-4 11.5-1 1-0.3 2.8 1.1 2.8h33.8c1.4 0 2.1-1.8 1.1-2.8-2.5-2.5-4-5.5-4-11.5 0-9.5-5.5-15-14-15z' fill='%23fff'/%3E%3Ccircle cx='138' cy='115.5' r='3.2' fill='%23fff'/%3E%3Cpath d='M132.5 149a5.5 5.5 0 0011 0z' fill='%23fff'/%3E%3C/svg%3E" />
+<title>לוח שנה ותזכורות — אבידן קוטאי</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;background:#f4f3f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 12px;padding-top:calc(24px + env(safe-area-inset-top));padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
+.wrap{display:flex;flex-direction:column;width:100%;max-width:920px;border:0.5px solid #d4d2c9;border-radius:14px;background:#fff;position:relative}
+.topbar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:0.5px solid #d4d2c9;background:#f8f7f4;border-radius:14px 14px 0 0;flex-wrap:wrap}
+.topbar-title{font-size:14px;font-weight:500;color:#1a1a1a;flex:1}
+.filter-bar{display:flex;gap:5px;flex-wrap:wrap}
+.cat-pill{font-size:11px;padding:3px 9px;border-radius:99px;cursor:pointer;border:0.5px solid transparent;font-weight:500;transition:opacity .15s;user-select:none}
+.cat-pill.inactive{opacity:.35}
+.tbtn{font-size:11px;padding:4px 10px;border:0.5px solid #bbb;border-radius:8px;background:none;cursor:pointer;color:#555;font-family:inherit;white-space:nowrap}
+.tbtn:hover{background:#f0efe9}
+.file-lbl{font-size:11px;padding:4px 10px;border:0.5px solid #bbb;border-radius:8px;background:none;cursor:pointer;color:#555;white-space:nowrap}
+.file-lbl:hover{background:#f0efe9}
+.add-btn{padding:6px 13px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap}
+.add-btn:hover{background:#3C3489}
+.reset-btn{color:#E24B4A;border-color:#E9B7B6}
+.reset-btn:hover{background:#FCEBEB}
+.reset-err{font-size:11px;color:#E24B4A;margin-top:-4px}
+.body{display:flex;flex:1}
+.sidebar{width:230px;min-width:230px;border-left:0.5px solid #d4d2c9;padding:12px;display:flex;flex-direction:column;gap:10px;background:#f8f7f4;overflow-y:auto;max-height:620px;border-radius:0 0 14px 0}
+.sec-label{font-size:10px;font-weight:500;color:#999;letter-spacing:.06em;text-transform:uppercase}
+.r-list{display:flex;flex-direction:column;gap:5px}
+.r-item{display:flex;align-items:flex-start;gap:7px;padding:7px 9px;border-radius:8px;border:0.5px solid #e0dfd8;background:#fff;cursor:pointer}
+.r-item:hover{border-color:#bbb}
+.r-bar{width:3px;min-height:28px;border-radius:2px;margin-top:1px;flex-shrink:0}
+.r-info{flex:1;min-width:0}
+.r-title{font-size:12px;font-weight:500;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-sub{font-size:10px;color:#888;margin-top:1px}
+.r-badge{font-size:9px;padding:1px 5px;border-radius:4px;display:inline-block;margin-top:2px;font-weight:500}
+.r-recur{font-size:9px;color:#aaa;margin-right:4px}
+.r-del{background:none;border:none;cursor:pointer;font-size:11px;color:#bbb;padding:2px 3px;border-radius:3px;flex-shrink:0}
+.r-del:hover{color:#E24B4A;background:#FCEBEB}
+.main{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px}
+.month-nav{display:flex;align-items:center;justify-content:space-between}
+.month-title{font-size:14px;font-weight:500;color:#1a1a1a}
+.nav-btn{background:none;border:0.5px solid #ccc;border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:15px;color:#555;display:flex;align-items:center;justify-content:center}
+.nav-btn:hover{background:#f0efe9}
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.wlabel{font-size:10px;color:#aaa;padding:3px 0;font-weight:500}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.day{min-height:54px;padding:4px;border-radius:7px;cursor:pointer;border:0.5px solid transparent;display:flex;flex-direction:column}
+.day:hover{background:#f4f3f0;border-color:#e0dfd8}
+.day.other .dnum{color:#ccc}
+.day.today .dnum{background:#534AB7;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500}
+.day.selected{background:#f4f3f0;border-color:#bbb}
+.dnum{font-size:11px;color:#1a1a1a;width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.dots{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px}
+.dot{width:5px;height:5px;border-radius:50%}
+.cal-lbl{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;margin-top:1px}
+.detail{border:0.5px solid #e0dfd8;border-radius:8px;padding:10px 12px}
+.detail-date{font-size:12px;font-weight:500;color:#1a1a1a;margin-bottom:7px}
+.det-row{display:flex;align-items:center;gap:7px;font-size:12px;color:#1a1a1a;padding:4px 0;border-bottom:0.5px solid #f0efe9}
+.det-row:last-child{border-bottom:none}
+.det-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.empty-msg{font-size:11px;color:#aaa;text-align:center;padding:8px 0}
+.overlay-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:100;align-items:center;justify-content:center}
+.overlay-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;border:0.5px solid #d4d2c9;padding:1.4rem;width:340px;display:flex;flex-direction:column;gap:11px;box-shadow:0 8px 32px rgba(0,0,0,0.14);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:500;color:#1a1a1a}
+.fg{display:flex;flex-direction:column;gap:3px}
+.flabel{font-size:11px;color:#666}
+.finput{padding:7px 10px;border:0.5px solid #ccc;border-radius:8px;font-size:13px;background:#fff;color:#1a1a1a;width:100%;font-family:inherit}
+.finput:focus{outline:none;border-color:#7F77DD}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.col-picker{display:flex;gap:7px}
+.col-opt{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.col-opt.sel{border-color:#1a1a1a}
+.tag-opts{display:flex;gap:5px;flex-wrap:wrap}
+.tag-opt{font-size:11px;padding:3px 9px;border-radius:99px;border:0.5px solid #ccc;cursor:pointer;color:#555;background:none;font-family:inherit}
+.tag-opt.sel{background:#534AB7;color:#fff;border-color:#534AB7}
+.sound-opt{font-size:12px;padding:4px 11px;border-radius:99px;border:0.5px solid #ccc;cursor:pointer;color:#555;background:none;font-family:inherit}
+.sound-opt.sel{background:#D85A30;color:#fff;border-color:#D85A30}
+.vol-row{display:flex;align-items:center;gap:8px}
+.vol-row input[type=range]{flex:1}
+.vol-lbl{font-size:11px;color:#888;min-width:32px;text-align:left}
+.modal-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:4px}
+.btn-cancel{padding:7px 13px;background:none;border:0.5px solid #ccc;border-radius:8px;font-size:12px;cursor:pointer;color:#1a1a1a;font-family:inherit}
+.btn-save{padding:7px 13px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;font-family:inherit}
+.btn-save:hover{background:#3C3489}
+.notif-popup{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#fff;border-radius:18px;padding:1.3rem 1.5rem 1.2rem;width:320px;z-index:300;box-shadow:0 8px 40px rgba(0,0,0,0.2);border:2px solid #BA7517}
+.notif-popup.show{display:block;animation:popIn .35s cubic-bezier(.36,.07,.19,.97)}
+.notif-popup.shaking{animation:nag .45s ease-in-out infinite}
+@keyframes popIn{from{opacity:0;transform:translateX(-50%) scale(.85) translateY(24px)}to{opacity:1;transform:translateX(-50%) scale(1) translateY(0)}}
+@keyframes nag{0%,100%{transform:translateX(-50%) rotate(0)}20%{transform:translateX(calc(-50% - 6px)) rotate(-2deg)}40%{transform:translateX(calc(-50% + 6px)) rotate(2deg)}60%{transform:translateX(calc(-50% - 4px)) rotate(-1deg)}80%{transform:translateX(calc(-50% + 4px)) rotate(1deg)}}
+.notif-hdr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.bell-wrap{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.bell-wrap.ring{animation:bellSwing .3s ease-in-out infinite alternate}
+@keyframes bellSwing{from{transform:rotate(-20deg)}to{transform:rotate(20deg)}}
+.notif-texts{flex:1}
+.notif-name{font-size:14px;font-weight:500;color:#1a1a1a}
+.notif-when{font-size:11px;color:#854F0B;font-weight:500;margin-top:1px}
+.notif-msg{font-size:12px;color:#555;margin-top:2px}
+.notif-prog{height:3px;background:#e8e7e4;border-radius:2px;margin:10px 0 8px;overflow:hidden}
+.notif-prog-fill{height:100%;border-radius:2px;background:#BA7517;width:100%}
+.snooze-row{display:flex;gap:5px;margin-bottom:9px;flex-wrap:wrap}
+.snooze-pill{font-size:11px;padding:3px 9px;border-radius:99px;border:0.5px solid #ccc;cursor:pointer;background:none;color:#555;font-family:inherit}
+.snooze-pill:hover{background:#f0efe9}
+.notif-btns{display:flex;gap:8px}
+.btn-dismiss{flex:1;padding:8px;border:0.5px solid #ccc;border-radius:8px;background:none;cursor:pointer;font-size:12px;color:#1a1a1a;font-family:inherit}
+.btn-dismiss:hover{background:#f0efe9}
+.btn-gotit{flex:1;padding:8px;border:none;border-radius:8px;background:#534AB7;color:#fff;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit}
+.btn-gotit:hover{background:#3C3489}
+.backup-toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
+.backup-toast.show{opacity:1}
+.copyright-bar{background:#0f2d5e;color:#fff;text-align:center;font-size:15px;font-weight:700;letter-spacing:.8px;padding:9px 22px;border-bottom:3px solid #f0b429;font-family:'Segoe UI',Arial,sans-serif;width:100%;}
+@media print{.copyright-bar{background:#0f2d5e!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#fff!important;border-bottom:3px solid #f0b429!important;}}
+@media(max-width:640px){.body{flex-direction:column}.sidebar{width:100%;max-height:200px;border-left:none;border-top:0.5px solid #d4d2c9}}
+</style>
+</head>
+<body>
+
+<div class="copyright-bar">© כל הזכויות שמורות לאבידן קוטאי</div>
+
+<h1>לוח שנה ותזכורות &mdash; אבידן קוטאי</h1>
+
+<div class="wrap">
+  <div class="topbar">
+    <span class="topbar-title">לוח שנה</span>
+    <div class="filter-bar" id="filter-bar"></div>
+    <button class="tbtn" onclick="triggerTest()">&#128276; בדוק התראה</button>
+    <button class="tbtn" id="push-btn" onclick="enableNotifications()">&#128276; הפעל התראות</button>
+    <button class="tbtn" onclick="exportData()">&#128229; גיבוי</button>
+    <label class="file-lbl">&#128228; שחזור<input type="file" accept=".json" onchange="importData(event)" style="display:none" /></label>
+    <button class="tbtn reset-btn" onclick="openReset()">&#128465; מחיקה</button>
+    <button class="add-btn" onclick="openModal()">+ תזכורת חדשה</button>
+  </div>
+  <div class="body">
+    <div class="main">
+      <div class="month-nav">
+        <button class="nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+        <span class="month-title" id="month-title"></span>
+        <button class="nav-btn" onclick="changeMonth(1)">&#8250;</button>
+      </div>
+      <div class="weekdays">
+        <span class="wlabel">א</span><span class="wlabel">ב</span><span class="wlabel">ג</span>
+        <span class="wlabel">ד</span><span class="wlabel">ה</span><span class="wlabel">ו</span><span class="wlabel">ש</span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="detail" id="detail" style="display:none">
+        <div class="detail-date" id="detail-date"></div>
+        <div id="detail-rems"></div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <span class="sec-label">תזכורות קרובות</span>
+      <div class="r-list" id="r-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="overlay-bg" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">תזכורת חדשה</div>
+    <div class="fg"><label class="flabel">כותרת</label><input class="finput" type="text" id="in-title" placeholder="שם הפגישה / משימה" /></div>
+    <div class="frow">
+      <div class="fg"><label class="flabel">תאריך</label><input class="finput" type="date" id="in-date" /></div>
+      <div class="fg"><label class="flabel">שעה</label><input class="finput" type="time" id="in-time" /></div>
+    </div>
+    <div class="fg"><label class="flabel">קטגוריה</label>
+      <select class="finput" id="in-cat">
+        <option value="work">עבודה</option><option value="personal">אישי</option>
+        <option value="health">בריאות</option><option value="finance">פיננסי</option><option value="family">משפחה</option>
+      </select>
+    </div>
+    <div class="fg"><label class="flabel">צבע</label>
+      <div class="col-picker">
+        <div class="col-opt sel" style="background:#7F77DD" data-c="purple" onclick="selColor(this)"></div>
+        <div class="col-opt" style="background:#1D9E75" data-c="teal" onclick="selColor(this)"></div>
+        <div class="col-opt" style="background:#D85A30" data-c="coral" onclick="selColor(this)"></div>
+        <div class="col-opt" style="background:#BA7517" data-c="amber" onclick="selColor(this)"></div>
+        <div class="col-opt" style="background:#378ADD" data-c="blue" onclick="selColor(this)"></div>
+        <div class="col-opt" style="background:#D4537E" data-c="pink" onclick="selColor(this)"></div>
+      </div>
+    </div>
+    <div class="fg"><label class="flabel">חזרה</label>
+      <div class="tag-opts">
+        <button class="tag-opt sel" data-r="none" onclick="selTag(this)">חד פעמי</button>
+        <button class="tag-opt" data-r="daily" onclick="selTag(this)">יומי</button>
+        <button class="tag-opt" data-r="weekly" onclick="selTag(this)">שבועי</button>
+        <button class="tag-opt" data-r="monthly" onclick="selTag(this)">חודשי</button>
+        <button class="tag-opt" data-r="yearly" onclick="selTag(this)">שנתי</button>
+      </div>
+    </div>
+    <div class="fg"><label class="flabel">התראה לפני</label>
+      <select class="finput" id="in-notif">
+        <option value="0">בזמן הפגישה</option><option value="5">5 דקות לפני</option>
+        <option value="10" selected>10 דקות לפני</option><option value="15">15 דקות לפני</option>
+        <option value="30">30 דקות לפני</option><option value="60">שעה לפני</option><option value="1440">יום לפני</option>
+      </select>
+    </div>
+    <div class="fg"><label class="flabel">סוג צליל</label>
+      <div class="tag-opts" id="sound-opts">
+        <button class="sound-opt sel" data-s="annoying" onclick="selSound(this)">&#128561; נודניק</button>
+        <button class="sound-opt" data-s="beep" onclick="selSound(this)">&#128276; ביפ</button>
+        <button class="sound-opt" data-s="gentle" onclick="selSound(this)">&#127926; עדין</button>
+        <button class="sound-opt" data-s="alarm" onclick="selSound(this)">&#128680; אזעקה</button>
+        <button class="sound-opt" data-s="none" onclick="selSound(this)">&#128263; ללא</button>
+      </div>
+    </div>
+    <div class="fg"><label class="flabel">עוצמת קול</label>
+      <div class="vol-row">
+        <span>&#128264;</span>
+        <input type="range" id="in-vol" min="0" max="100" value="80" step="1" oninput="document.getElementById('vol-out').textContent=this.value+'%'" />
+        <span class="vol-lbl" id="vol-out">80%</span>
+        <span>&#128266;</span>
+      </div>
+    </div>
+    <div class="fg"><label class="flabel">הערות</label><input class="finput" type="text" id="in-notes" placeholder="הערות נוספות..." /></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">ביטול</button>
+      <button class="btn-save" id="btn-save" onclick="saveReminder()">שמור</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reset (password protected) -->
+<div class="overlay-bg" id="reset-overlay">
+  <div class="modal" style="width:330px">
+    <div class="modal-title">&#9888;&#65039; מחיקת כל הנתונים</div>
+    <p style="font-size:12px;color:#666;line-height:1.55">פעולה זו תמחק לצמיתות את <strong>כל התזכורות</strong>. לא ניתן לבטל לאחר אישור. הזן סיסמה כדי להמשיך.</p>
+    <div class="fg"><label class="flabel">סיסמה</label>
+      <input class="finput" type="password" id="reset-pass" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter')confirmReset()" />
+    </div>
+    <div class="reset-err" id="reset-err" style="display:none">סיסמה שגויה, נסה שוב</div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeReset()">ביטול</button>
+      <button class="btn-save" style="background:#E24B4A" onclick="confirmReset()">מחק הכל</button>
+    </div>
+  </div>
+</div>
+
+<!-- Notification -->
+<div class="notif-popup" id="notif-popup">
+  <div class="notif-hdr">
+    <div class="bell-wrap" id="bell-wrap">&#128276;</div>
+    <div class="notif-texts">
+      <div class="notif-name" id="notif-name">פגישת צוות</div>
+      <div class="notif-when" id="notif-when"></div>
+      <div class="notif-msg" id="notif-msg"></div>
+    </div>
+  </div>
+  <div class="notif-prog"><div class="notif-prog-fill" id="notif-fill"></div></div>
+  <div style="font-size:11px;color:#999;margin-bottom:5px">דחה ל:</div>
+  <div class="snooze-row">
+    <button class="snooze-pill" onclick="snooze(5)">5 דקות</button>
+    <button class="snooze-pill" onclick="snooze(10)">10 דקות</button>
+    <button class="snooze-pill" onclick="snooze(30)">חצי שעה</button>
+    <button class="snooze-pill" onclick="snooze(60)">שעה</button>
+  </div>
+  <div class="notif-btns">
+    <button class="btn-dismiss" onclick="dismiss()">סגור</button>
+    <button class="btn-gotit" onclick="dismiss()">הבנתי!</button>
+  </div>
+</div>
+
+<div class="backup-toast" id="backup-toast"></div>
+
+<script>
+const COLORS={purple:'#7F77DD',teal:'#1D9E75',coral:'#D85A30',amber:'#BA7517',blue:'#378ADD',pink:'#D4537E'};
+const CATS={work:{label:'עבודה',bg:'#EEEDFE',tc:'#3C3489'},personal:{label:'אישי',bg:'#E1F5EE',tc:'#085041'},health:{label:'בריאות',bg:'#FCEBEB',tc:'#791F1F'},finance:{label:'פיננסי',bg:'#FAEEDA',tc:'#633806'},family:{label:'משפחה',bg:'#FBEAF0',tc:'#72243E'}};
+const MONTHS=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+const RLBL={none:'חד פעמי',daily:'יומי',weekly:'שבועי',monthly:'חודשי',yearly:'שנתי'};
+const SEMOJI={annoying:'😱',beep:'🔔',gentle:'🎵',alarm:'🚨',none:'🔇'};
+
+/* ===== הגדרות PUSH (התראות גם כשהאפליקציה סגורה) ===== */
+/* ←← אחרי פריסת ה-Worker ב-Cloudflare, הדבק כאן את הכתובת שלו (בלי / בסוף) */
+const PUSH_WORKER_URL='https://calendar-push.avieotok.workers.dev';
+const VAPID_PUBLIC='BOcUhkCknXhoxOsfmBagBtTYrfIy6Kp3x0VANlcgswRL5ExYfrMIcnZSvP7RyPWj6DmAee_WKaJ-dyWTQVSJluo';
+let pushSub=null;
+
+let today=new Date();
+let cur={year:today.getFullYear(),month:today.getMonth()};
+let selDate=null,selColorVal='purple',selRecurVal='none',selSoundVal='annoying';
+let editingId=null;
+let activeFilters=new Set(Object.keys(CATS));
+let nextId=10,audioCtx=null;
+let soundTimer=null,autoTimer=null,snoozeTimer=null;
+let activeR=null;
+
+let reminders=[
+  {id:1,title:'פגישת צוות',date:fmt(today),time:'10:00',color:'purple',cat:'work',recur:'weekly',notifMin:10,notes:'',sound:'annoying',vol:80},
+  {id:2,title:'יום הולדת - אמא',date:fmt(nd(3)),time:'',color:'coral',cat:'family',recur:'yearly',notifMin:1440,notes:'לקנות מתנה',sound:'gentle',vol:70},
+  {id:3,title:'תשלום חשבון חשמל',date:fmt(nd(7)),time:'09:00',color:'amber',cat:'finance',recur:'monthly',notifMin:60,notes:'',sound:'beep',vol:80},
+  {id:4,title:'רופא שיניים',date:fmt(nd(10)),time:'14:30',color:'teal',cat:'health',recur:'none',notifMin:30,notes:'להביא כרטיס ביטוח',sound:'annoying',vol:90},
+  {id:5,title:'ריצה בוקר',date:fmt(today),time:'07:00',color:'teal',cat:'personal',recur:'daily',notifMin:5,notes:'',sound:'gentle',vol:60},
+];
+
+function nd(days){return new Date(today.getFullYear(),today.getMonth(),today.getDate()+days);}
+function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function parseDate(s){let[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+
+/* ===== PERSISTENT STORAGE ===== */
+var LS_KEY='avidan-calendar-v1';
+function saveLS(){
+  try{localStorage.setItem(LS_KEY,JSON.stringify({reminders:reminders,nextId:nextId}));}catch(e){}
+  if(typeof syncPush==='function')syncPush();
+}
+function loadLS(){
+  try{
+    var raw=localStorage.getItem(LS_KEY);
+    if(raw){
+      var d=JSON.parse(raw);
+      if(d&&Array.isArray(d.reminders)){
+        reminders=d.reminders;
+        nextId=d.nextId||(reminders.reduce(function(m,r){return Math.max(m,r.id);},0)+1);
+      }
+    }
+  }catch(e){}
+}
+loadLS();
+
+/* ===== AUDIO ===== */
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function tone(ctx,freq,start,dur,vol,type){
+  type=type||'sine';
+  var o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.type=type;o.frequency.value=freq;
+  g.gain.setValueAtTime(0,ctx.currentTime+start);
+  g.gain.linearRampToValueAtTime(vol,ctx.currentTime+start+0.015);
+  g.gain.linearRampToValueAtTime(0,ctx.currentTime+start+dur-0.015);
+  o.start(ctx.currentTime+start);o.stop(ctx.currentTime+start+dur);
+}
+function playSound(type,vol){
+  var v=(vol||80)/100,ctx=getCtx();
+  if(type==='annoying'){
+    [[1200,.06,0],[900,.06,.09],[1400,.06,.18],[800,.06,.27],[1600,.08,.36],[1000,.06,.47],[1800,.10,.57],[600,.06,.69],[2000,.14,.80]].forEach(function(x){tone(ctx,x[0],x[2],x[1],v*.55,'square');});
+    var o=ctx.createOscillator(),lfo=ctx.createOscillator(),lg=ctx.createGain(),g=ctx.createGain();
+    lfo.frequency.value=12;lg.gain.value=80;lfo.connect(lg);lg.connect(o.frequency);
+    o.connect(g);g.connect(ctx.destination);o.type='sawtooth';o.frequency.value=440;
+    g.gain.setValueAtTime(v*.2,ctx.currentTime+.95);g.gain.linearRampToValueAtTime(0,ctx.currentTime+1.35);
+    lfo.start(ctx.currentTime+.95);lfo.stop(ctx.currentTime+1.35);o.start(ctx.currentTime+.95);o.stop(ctx.currentTime+1.35);
+  }else if(type==='beep'){
+    tone(ctx,880,0,.14,v*.7);tone(ctx,880,.22,.14,v*.7);
+  }else if(type==='gentle'){
+    tone(ctx,523,0,.5,v*.4);tone(ctx,659,.18,.5,v*.35);tone(ctx,784,.36,.7,v*.3);tone(ctx,1047,.62,.6,v*.2);
+  }else if(type==='alarm'){
+    for(var i=0;i<3;i++){
+      var oa=ctx.createOscillator(),ga=ctx.createGain();oa.connect(ga);ga.connect(ctx.destination);oa.type='sawtooth';
+      ga.gain.setValueAtTime(v*.45,ctx.currentTime+i*.5);ga.gain.linearRampToValueAtTime(0,ctx.currentTime+i*.5+.45);
+      oa.frequency.setValueAtTime(440,ctx.currentTime+i*.5);oa.frequency.linearRampToValueAtTime(880,ctx.currentTime+i*.5+.22);oa.frequency.linearRampToValueAtTime(440,ctx.currentTime+i*.5+.44);
+      oa.start(ctx.currentTime+i*.5);oa.stop(ctx.currentTime+i*.5+.46);
+    }
+  }
+}
+var SINT={annoying:1400,beep:700,gentle:2400,alarm:1700};
+function startLoop(type,vol){if(type==='none')return;playSound(type,vol);soundTimer=setInterval(function(){playSound(type,vol);},SINT[type]||1500);}
+function stopLoop(){if(soundTimer){clearInterval(soundTimer);soundTimer=null;}}
+
+/* ===== NOTIFICATION ===== */
+function showNotif(r,minsLeft){
+  activeR=r;stopLoop();
+  if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
+  var pop=document.getElementById('notif-popup');
+  var bell=document.getElementById('bell-wrap');
+  var col=COLORS[r.color]||'#BA7517';
+  document.getElementById('notif-name').textContent=r.title;
+  document.getElementById('notif-when').textContent=r.time?'היום ב-'+r.time:'';
+  var msg=minsLeft===0?'הפגישה מתחילה עכשיו!':minsLeft===1?'בעוד דקה!':'בעוד '+minsLeft+' דקות';
+  document.getElementById('notif-msg').textContent=msg;
+  pop.style.borderColor=col;
+  bell.style.background=col+'22';
+  bell.textContent=SEMOJI[r.sound]||'🔔';
+  var fill=document.getElementById('notif-fill');
+  fill.style.background=col;fill.style.transition='none';fill.style.width='100%';
+  var DUR=16000;
+  setTimeout(function(){fill.style.transition='width '+DUR+'ms linear';fill.style.width='0%';},60);
+  autoTimer=setTimeout(function(){if(pop.classList.contains('show'))snooze(5);},DUR);
+  pop.classList.remove('shaking');pop.classList.add('show');bell.classList.add('ring');
+  setTimeout(function(){if(pop.classList.contains('show'))pop.classList.add('shaking');},3000);
+  setTimeout(function(){startLoop(r.sound||'annoying',r.vol!==undefined?r.vol:80);},80);
+}
+function dismiss(){
+  stopLoop();
+  if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
+  if(snoozeTimer){clearTimeout(snoozeTimer);snoozeTimer=null;}
+  var pop=document.getElementById('notif-popup');
+  pop.classList.remove('show','shaking');
+  document.getElementById('bell-wrap').classList.remove('ring');
+}
+function snooze(mins){
+  stopLoop();if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
+  document.getElementById('notif-popup').classList.remove('show','shaking');
+  document.getElementById('bell-wrap').classList.remove('ring');
+  var r=activeR;
+  snoozeTimer=setTimeout(function(){if(r){document.getElementById('notif-msg').textContent='זמן הדחייה הסתיים!';showNotif(r,0);}},mins*60*1000);
+}
+function triggerTest(){
+  var r=reminders[0]||{id:0,title:'פגישת בדיקה',time:'10:00',color:'purple',sound:'annoying',vol:80};
+  showNotif(r,10);
+}
+
+/* ===== BACKUP & RESTORE ===== */
+function toast(msg){
+  var t=document.getElementById('backup-toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+function exportData(){
+  var data={version:1,name:'אבידן קוטאי',exported:new Date().toISOString(),reminders:reminders,nextId:nextId};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='calendar-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(a.href);
+  toast('הגיבוי נשמר בהצלחה');
+}
+function importData(event){
+  var file=event.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(!data.reminders||!Array.isArray(data.reminders))throw new Error('invalid');
+      if(!confirm('שחזור יחליף את כל התזכורות הנוכחיות ('+reminders.length+' תזכורות). להמשיך?'))return;
+      reminders=data.reminders;
+      nextId=data.nextId||reminders.reduce(function(m,r){return Math.max(m,r.id);},0)+1;
+      saveLS();
+      selDate=null;document.getElementById('detail').style.display='none';
+      render();
+      toast('שוחזרו '+reminders.length+' תזכורות בהצלחה');
+    }catch(err){alert('שגיאה בקובץ הגיבוי. ודא שהקובץ תקין.');}
+    event.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+/* ===== RESET ALL DATA (password protected) ===== */
+function openReset(){
+  document.getElementById('reset-pass').value='';
+  document.getElementById('reset-pass').style.borderColor='#ccc';
+  document.getElementById('reset-err').style.display='none';
+  document.getElementById('reset-overlay').classList.add('open');
+  setTimeout(function(){document.getElementById('reset-pass').focus();},60);
+}
+function closeReset(){document.getElementById('reset-overlay').classList.remove('open');}
+function confirmReset(){
+  var inp=document.getElementById('reset-pass'),err=document.getElementById('reset-err');
+  if(inp.value!=='30172'){
+    err.style.display='block';inp.style.borderColor='#E24B4A';inp.value='';inp.focus();
+    return;
+  }
+  reminders=[];nextId=10;selDate=null;
+  activeFilters=new Set(Object.keys(CATS));
+  document.getElementById('detail').style.display='none';
+  saveLS();
+  closeReset();render();toast('כל הנתונים נמחקו לצמיתות');
+}
+document.getElementById('reset-overlay').onclick=function(e){if(e.target===this)closeReset();};
+
+/* ===== PUSH NOTIFICATIONS (גם כשהאפליקציה סגורה) ===== */
+function urlB64ToUint8Array(s){
+  var pad='='.repeat((4-s.length%4)%4),b=(s+pad).replace(/-/g,'+').replace(/_/g,'/');
+  var raw=atob(b),out=new Uint8Array(raw.length);
+  for(var i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);
+  return out;
+}
+function updatePushBtn(){
+  var btn=document.getElementById('push-btn');if(!btn)return;
+  if(pushSub){btn.innerHTML='&#128276; התראות פעילות';btn.style.color='#1D9E75';btn.style.borderColor='#A6DBC8';}
+  else{btn.innerHTML='&#128276; הפעל התראות';btn.style.color='';btn.style.borderColor='';}
+}
+async function enableNotifications(){
+  if(!('serviceWorker' in navigator)||!('PushManager' in window)){
+    alert('הדפדפן לא תומך בהתראות Push.\n\nבאייפון: הוסף תחילה את האפליקציה למסך הבית (כפתור שיתוף ← הוסף למסך הבית), פתח אותה משם, ורק אז הפעל התראות.');
+    return;
+  }
+  if(PUSH_WORKER_URL.indexOf('YOUR-WORKER')>=0){
+    alert('עדיין לא הוגדרה כתובת השרת (PUSH_WORKER_URL) בקובץ. ראה את מדריך ההתקנה SETUP_PUSH.md.');
+    return;
+  }
+  try{
+    var perm=await Notification.requestPermission();
+    if(perm!=='granted'){alert('לא ניתנה הרשאה להתראות. ניתן לאשר בהגדרות הדפדפן.');return;}
+    var reg=await navigator.serviceWorker.ready;
+    pushSub=await reg.pushManager.getSubscription();
+    if(!pushSub){
+      pushSub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64ToUint8Array(VAPID_PUBLIC)});
+    }
+    await syncPush();
+    await fetch(PUSH_WORKER_URL+'/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:pushSub})});
+    updatePushBtn();
+    toast('התראות הופעלו! נשלחה התראת בדיקה');
+  }catch(e){alert('שגיאה בהפעלת התראות: '+(e&&e.message?e.message:e));}
+}
+async function syncPush(){
+  if(!pushSub){
+    try{var reg=await navigator.serviceWorker.ready;pushSub=await reg.pushManager.getSubscription();}catch(e){}
+  }
+  if(!pushSub||PUSH_WORKER_URL.indexOf('YOUR-WORKER')>=0)return;
+  try{
+    await fetch(PUSH_WORKER_URL+'/save',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({subscription:pushSub,reminders:reminders,tz:Intl.DateTimeFormat().resolvedOptions().timeZone})});
+  }catch(e){}
+}
+
+/* ===== CALENDAR ===== */
+function getOccurrences(r,year,month){
+  var dates=[],base=parseDate(r.date);
+  var mS=new Date(year,month,1),mE=new Date(year,month+1,0);
+  if(r.recur==='none'){if(base>=mS&&base<=mE)dates.push(fmt(base));}
+  else if(r.recur==='daily'){var d=new Date(Math.max(base.getTime(),mS.getTime()));while(d<=mE){dates.push(fmt(d));d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);}}
+  else if(r.recur==='weekly'){var d=new Date(base);while(d<mS)d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+7);while(d<=mE){dates.push(fmt(d));d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+7);}}
+  else if(r.recur==='monthly'){var d=new Date(year,month,base.getDate());if(d>=mS&&d<=mE)dates.push(fmt(d));}
+  else if(r.recur==='yearly'){var d=new Date(year,base.getMonth(),base.getDate());if(d>=mS&&d<=mE)dates.push(fmt(d));}
+  return dates;
+}
+function remsFor(ds){return reminders.filter(function(r){return activeFilters.has(r.cat)&&getOccurrences(r,cur.year,cur.month).indexOf(ds)>=0;});}
+function changeMonth(dir){
+  cur.month+=dir;if(cur.month>11){cur.month=0;cur.year++;}if(cur.month<0){cur.month=11;cur.year--;}
+  selDate=null;document.getElementById('detail').style.display='none';render();
+}
+function renderFilterBar(){
+  var bar=document.getElementById('filter-bar');bar.innerHTML='';
+  Object.entries(CATS).forEach(function(kv){
+    var k=kv[0],v=kv[1];
+    var p=document.createElement('span');
+    p.className='cat-pill'+(activeFilters.has(k)?'':' inactive');
+    p.style.cssText='background:'+v.bg+';color:'+v.tc+';border-color:'+v.tc+'44';
+    p.textContent=v.label;
+    p.onclick=function(){if(activeFilters.has(k)){if(activeFilters.size>1)activeFilters.delete(k);}else activeFilters.add(k);render();};
+    bar.appendChild(p);
+  });
+}
+function renderGrid(){
+  document.getElementById('month-title').textContent=MONTHS[cur.month]+' '+cur.year;
+  var grid=document.getElementById('cal-grid');grid.innerHTML='';
+  var first=new Date(cur.year,cur.month,1),startDay=first.getDay();
+  var dim=new Date(cur.year,cur.month+1,0).getDate(),prevDim=new Date(cur.year,cur.month,0).getDate();
+  var todayStr=fmt(today);
+  var cells=[];
+  for(var i=startDay-1;i>=0;i--)cells.push({d:prevDim-i,cur:false,ds:fmt(new Date(cur.year,cur.month-1,prevDim-i))});
+  for(var d=1;d<=dim;d++)cells.push({d:d,cur:true,ds:fmt(new Date(cur.year,cur.month,d))});
+  while(cells.length<42)cells.push({d:cells.length-dim-startDay+1,cur:false,ds:fmt(new Date(cur.year,cur.month+1,cells.length-dim-startDay+1))});
+  cells.forEach(function(cell){
+    var div=document.createElement('div');
+    div.className='day'+(!cell.cur?' other':'')+(cell.ds===todayStr?' today':'')+(cell.ds===selDate?' selected':'');
+    var dn=document.createElement('div');dn.className='dnum';dn.textContent=cell.d;div.appendChild(dn);
+    var rems=remsFor(cell.ds);
+    if(rems.length){
+      var dots=document.createElement('div');dots.className='dots';
+      rems.slice(0,3).forEach(function(r){var dot=document.createElement('div');dot.className='dot';dot.style.background=COLORS[r.color];dots.appendChild(dot);});
+      div.appendChild(dots);
+      var lbl=document.createElement('div');lbl.className='cal-lbl';lbl.style.color=COLORS[rems[0].color];
+      lbl.textContent=SEMOJI[rems[0].sound]+' '+rems[0].title+(rems.length>1?' +'+(rems.length-1):'');
+      div.appendChild(lbl);
+    }
+    div.onclick=function(){selectDay(cell.ds);};
+    grid.appendChild(div);
+  });
+}
+function selectDay(ds){
+  selDate=ds;
+  var rems=remsFor(ds);
+  var parts=ds.split('-');
+  document.getElementById('detail-date').textContent=parseInt(parts[2])+' '+MONTHS[parseInt(parts[1])-1]+' '+parts[0];
+  var dr=document.getElementById('detail-rems');dr.innerHTML='';
+  if(!rems.length){dr.innerHTML='<div class="empty-msg">אין תזכורות לתאריך זה</div>';}
+  else rems.forEach(function(r){
+    var cat=CATS[r.cat],row=document.createElement('div');row.className='det-row';
+    row.style.cursor='pointer';row.title='לחץ לעריכה';
+    row.innerHTML='<div class="det-dot" style="background:'+COLORS[r.color]+'"></div>'
+      +'<span style="flex:1">'+r.title+(r.time?' &mdash; '+r.time:'')+(r.notes?' &middot; '+r.notes:'')+'</span>'
+      +'<span style="font-size:14px;margin-left:4px">'+SEMOJI[r.sound]+'</span>'
+      +'<span style="background:'+cat.bg+';color:'+cat.tc+';padding:1px 5px;border-radius:4px;font-size:9px">'+cat.label+'</span>'
+      +(r.recur!=='none'?'<span style="font-size:9px;color:#aaa;margin-right:3px">'+RLBL[r.recur]+'</span>':'')
+      +'<button class="r-del" title="עריכה" onclick="openEdit('+r.id+');event.stopPropagation();">&#9998;</button>'
+      +'<button class="r-del" title="מחיקה" onclick="delR('+r.id+',event)">&#x2715;</button>';
+    row.onclick=function(e){if(e.target.classList.contains('r-del'))return;openEdit(r.id);};
+    dr.appendChild(row);
+  });
+  document.getElementById('detail').style.display='block';
+  document.getElementById('in-date').value=ds;
+  renderGrid();
+}
+function renderSidebar(){
+  var list=document.getElementById('r-list');list.innerHTML='';
+  var todayStr=fmt(today),upcoming=[];
+  reminders.filter(function(r){return activeFilters.has(r.cat);}).forEach(function(r){
+    for(var m=0;m<3;m++){
+      var d=new Date(today.getFullYear(),today.getMonth()+m,1);
+      getOccurrences(r,d.getFullYear(),d.getMonth()).forEach(function(ds){if(ds>=todayStr)upcoming.push(Object.assign({},r,{occDate:ds}));});
+    }
+  });
+  var seen=new Set();
+  var shown=upcoming.filter(function(r){var k=r.id+'-'+r.occDate;if(seen.has(k))return false;seen.add(k);return true;}).sort(function(a,b){return a.occDate.localeCompare(b.occDate);}).slice(0,14);
+  if(!shown.length){list.innerHTML='<div class="empty-msg">אין תזכורות קרובות</div>';return;}
+  shown.forEach(function(r){
+    var item=document.createElement('div');item.className='r-item';item.title='לחץ לעריכה';
+    var parts=r.occDate.split('-'),cat=CATS[r.cat];
+    var dl=parseInt(parts[2])+' '+MONTHS[parseInt(parts[1])-1];
+    item.innerHTML='<div class="r-bar" style="background:'+COLORS[r.color]+'"></div>'
+      +'<div class="r-info"><div class="r-title">'+SEMOJI[r.sound]+' '+r.title+'</div>'
+      +'<div class="r-sub">'+dl+(r.time?' &middot; '+r.time:'')+'</div>'
+      +'<span class="r-badge" style="background:'+cat.bg+';color:'+cat.tc+'">'+cat.label+'</span>'
+      +(r.recur!=='none'?'<span class="r-recur">'+RLBL[r.recur]+'</span>':'')+'</div>'
+      +'<button class="r-del" onclick="delR('+r.id+',event)">&#x2715;</button>';
+    item.onclick=function(e){if(e.target.classList.contains('r-del'))return;openEdit(r.id);};
+    list.appendChild(item);
+  });
+}
+function delR(id,e){e.stopPropagation();reminders=reminders.filter(function(r){return r.id!==id;});saveLS();if(selDate)selectDay(selDate);render();}
+
+/* ===== MODAL ===== */
+function openModal(){
+  editingId=null;
+  document.getElementById('modal-title').textContent='תזכורת חדשה';
+  document.getElementById('btn-save').textContent='שמור';
+  document.getElementById('in-title').value='';
+  document.getElementById('in-title').style.borderColor='#ccc';
+  document.getElementById('in-date').value=selDate||fmt(today);
+  document.getElementById('in-time').value='';
+  document.getElementById('in-cat').value='work';
+  document.getElementById('in-notif').value=10;
+  document.getElementById('in-notes').value='';
+  document.getElementById('in-vol').value=80;
+  document.getElementById('vol-out').textContent='80%';
+  selColorVal='purple';selRecurVal='none';selSoundVal='annoying';
+  document.querySelectorAll('.col-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.c===selColorVal);});
+  document.querySelectorAll('.tag-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.r===selRecurVal);});
+  document.querySelectorAll('.sound-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.s===selSoundVal);});
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function openEdit(id){
+  var r=reminders.filter(function(x){return x.id===id;})[0];
+  if(!r)return;
+  editingId=id;
+  document.getElementById('modal-title').textContent='עריכת תזכורת';
+  document.getElementById('btn-save').textContent='עדכן';
+  document.getElementById('in-title').value=r.title;
+  document.getElementById('in-title').style.borderColor='#ccc';
+  document.getElementById('in-date').value=r.date;
+  document.getElementById('in-time').value=r.time||'';
+  document.getElementById('in-cat').value=r.cat;
+  document.getElementById('in-notif').value=r.notifMin;
+  document.getElementById('in-notes').value=r.notes||'';
+  document.getElementById('in-vol').value=r.vol||80;
+  document.getElementById('vol-out').textContent=(r.vol||80)+'%';
+  selColorVal=r.color;selRecurVal=r.recur;selSoundVal=r.sound;
+  document.querySelectorAll('.col-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.c===selColorVal);});
+  document.querySelectorAll('.tag-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.r===selRecurVal);});
+  document.querySelectorAll('.sound-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.s===selSoundVal);});
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){editingId=null;document.getElementById('modal-overlay').classList.remove('open');}
+function selColor(el){document.querySelectorAll('.col-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');selColorVal=el.dataset.c;}
+function selTag(el){el.closest('.tag-opts').querySelectorAll('.tag-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');selRecurVal=el.dataset.r;}
+function selSound(el){document.querySelectorAll('.sound-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');selSoundVal=el.dataset.s;if(selSoundVal!=='none')playSound(selSoundVal,parseInt(document.getElementById('in-vol').value)||80);}
+function saveReminder(){
+  var title=document.getElementById('in-title').value.trim(),date=document.getElementById('in-date').value;
+  if(!title||!date){document.getElementById('in-title').style.borderColor='#E24B4A';return;}
+  var data={title:title,date:date,time:document.getElementById('in-time').value,color:selColorVal,cat:document.getElementById('in-cat').value,recur:selRecurVal,notifMin:parseInt(document.getElementById('in-notif').value)||0,notes:document.getElementById('in-notes').value,sound:selSoundVal,vol:parseInt(document.getElementById('in-vol').value)||80};
+  if(editingId!==null){
+    reminders=reminders.map(function(r){return r.id===editingId?Object.assign({},r,data):r;});
+  }else{
+    reminders.push(Object.assign({id:nextId++},data));
+  }
+  editingId=null;
+  saveLS();
+  closeModal();if(selDate)selectDay(selDate);render();
+}
+document.getElementById('modal-overlay').onclick=function(e){if(e.target===this)closeModal();};
+
+/* ===== CHECK NOTIFICATIONS ===== */
+function checkNotifications(){
+  var now=new Date(),todayStr=fmt(now),nowMins=now.getHours()*60+now.getMinutes();
+  reminders.forEach(function(r){
+    if(!r.time)return;
+    if(getOccurrences(r,now.getFullYear(),now.getMonth()).indexOf(todayStr)<0)return;
+    var parts=r.time.split(':'),remMins=parseInt(parts[0])*60+parseInt(parts[1])-r.notifMin;
+    if(Math.abs(nowMins-remMins)<1)showNotif(r,r.notifMin);
+  });
+}
+
+function render(){renderFilterBar();renderGrid();renderSidebar();}
+render();
+setInterval(checkNotifications,30000);
+
+/* ===== SERVICE WORKER + PUSH INIT ===== */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(function(){
+    return navigator.serviceWorker.ready;
+  }).then(function(reg){
+    return reg.pushManager.getSubscription();
+  }).then(function(sub){
+    pushSub=sub||null;
+    if(pushSub)syncPush();
+    updatePushBtn();
+  }).catch(function(){});
+}
+
+/* ===== PWA INSTALL BANNER ===== */
+function isIOS(){return/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.MSStream;}
+function isInStandaloneMode(){return window.navigator.standalone===true;}
+function showIOSBanner(){
+  if(!isIOS()||isInStandaloneMode())return;
+  if(sessionStorage.getItem('pwa-dismissed'))return;
+  var b=document.getElementById('ios-banner');
+  if(b)setTimeout(function(){b.style.display='flex';},1800);
+}
+function dismissBanner(){
+  var b=document.getElementById('ios-banner');
+  if(b)b.style.display='none';
+  sessionStorage.setItem('pwa-dismissed','1');
+}
+showIOSBanner();
+
+</script>
+
+<!-- iOS Install Banner -->
+<div id="ios-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #d4d2c9;padding:14px 16px;padding-bottom:calc(14px + env(safe-area-inset-bottom));z-index:500;align-items:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.12)">
+  <div style="width:48px;height:48px;background:#534AB7;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  </div>
+  <div style="flex:1;min-width:0">
+    <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px">הוסף למסך הבית</div>
+    <div style="font-size:11px;color:#666;line-height:1.4">לחץ על <strong>&#9633; שתף</strong> ואז <strong>&#8220;הוסף למסך הבית&#8221;</strong> לגישה מהירה כמו אפליקציה</div>
+  </div>
+  <button onclick="dismissBanner()" style="background:none;border:none;font-size:20px;color:#aaa;cursor:pointer;padding:4px;line-height:1;flex-shrink:0">&times;</button>
+</div>
+</body>
+</html>
