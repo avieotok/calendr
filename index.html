@@ -166,7 +166,7 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
 <!-- Modal -->
 <div class="overlay-bg" id="modal-overlay">
   <div class="modal">
-    <div class="modal-title">תזכורת חדשה</div>
+    <div class="modal-title" id="modal-title">תזכורת חדשה</div>
     <div class="fg"><label class="flabel">כותרת</label><input class="finput" type="text" id="in-title" placeholder="שם הפגישה / משימה" /></div>
     <div class="frow">
       <div class="fg"><label class="flabel">תאריך</label><input class="finput" type="date" id="in-date" /></div>
@@ -224,7 +224,7 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
     <div class="fg"><label class="flabel">הערות</label><input class="finput" type="text" id="in-notes" placeholder="הערות נוספות..." /></div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">ביטול</button>
-      <button class="btn-save" onclick="saveReminder()">שמור</button>
+      <button class="btn-save" id="btn-save" onclick="saveReminder()">שמור</button>
     </div>
   </div>
 </div>
@@ -287,6 +287,7 @@ let pushSub=null;
 let today=new Date();
 let cur={year:today.getFullYear(),month:today.getMonth()};
 let selDate=null,selColorVal='purple',selRecurVal='none',selSoundVal='annoying';
+let editingId=null;
 let activeFilters=new Set(Object.keys(CATS));
 let nextId=10,audioCtx=null;
 let soundTimer=null,autoTimer=null,snoozeTimer=null;
@@ -573,11 +574,15 @@ function selectDay(ds){
   if(!rems.length){dr.innerHTML='<div class="empty-msg">אין תזכורות לתאריך זה</div>';}
   else rems.forEach(function(r){
     var cat=CATS[r.cat],row=document.createElement('div');row.className='det-row';
+    row.style.cursor='pointer';row.title='לחץ לעריכה';
     row.innerHTML='<div class="det-dot" style="background:'+COLORS[r.color]+'"></div>'
       +'<span style="flex:1">'+r.title+(r.time?' &mdash; '+r.time:'')+(r.notes?' &middot; '+r.notes:'')+'</span>'
       +'<span style="font-size:14px;margin-left:4px">'+SEMOJI[r.sound]+'</span>'
       +'<span style="background:'+cat.bg+';color:'+cat.tc+';padding:1px 5px;border-radius:4px;font-size:9px">'+cat.label+'</span>'
-      +(r.recur!=='none'?'<span style="font-size:9px;color:#aaa;margin-right:3px">'+RLBL[r.recur]+'</span>':'');
+      +(r.recur!=='none'?'<span style="font-size:9px;color:#aaa;margin-right:3px">'+RLBL[r.recur]+'</span>':'')
+      +'<button class="r-del" title="עריכה" onclick="openEdit('+r.id+');event.stopPropagation();">&#9998;</button>'
+      +'<button class="r-del" title="מחיקה" onclick="delR('+r.id+',event)">&#x2715;</button>';
+    row.onclick=function(e){if(e.target.classList.contains('r-del'))return;openEdit(r.id);};
     dr.appendChild(row);
   });
   document.getElementById('detail').style.display='block';
@@ -597,7 +602,7 @@ function renderSidebar(){
   var shown=upcoming.filter(function(r){var k=r.id+'-'+r.occDate;if(seen.has(k))return false;seen.add(k);return true;}).sort(function(a,b){return a.occDate.localeCompare(b.occDate);}).slice(0,14);
   if(!shown.length){list.innerHTML='<div class="empty-msg">אין תזכורות קרובות</div>';return;}
   shown.forEach(function(r){
-    var item=document.createElement('div');item.className='r-item';
+    var item=document.createElement('div');item.className='r-item';item.title='לחץ לעריכה';
     var parts=r.occDate.split('-'),cat=CATS[r.cat];
     var dl=parseInt(parts[2])+' '+MONTHS[parseInt(parts[1])-1];
     item.innerHTML='<div class="r-bar" style="background:'+COLORS[r.color]+'"></div>'
@@ -606,7 +611,7 @@ function renderSidebar(){
       +'<span class="r-badge" style="background:'+cat.bg+';color:'+cat.tc+'">'+cat.label+'</span>'
       +(r.recur!=='none'?'<span class="r-recur">'+RLBL[r.recur]+'</span>':'')+'</div>'
       +'<button class="r-del" onclick="delR('+r.id+',event)">&#x2715;</button>';
-    item.onclick=function(e){if(e.target.classList.contains('r-del'))return;selectDay(r.occDate);};
+    item.onclick=function(e){if(e.target.classList.contains('r-del'))return;openEdit(r.id);};
     list.appendChild(item);
   });
 }
@@ -614,7 +619,11 @@ function delR(id,e){e.stopPropagation();reminders=reminders.filter(function(r){r
 
 /* ===== MODAL ===== */
 function openModal(){
+  editingId=null;
+  document.getElementById('modal-title').textContent='תזכורת חדשה';
+  document.getElementById('btn-save').textContent='שמור';
   document.getElementById('in-title').value='';
+  document.getElementById('in-title').style.borderColor='#ccc';
   document.getElementById('in-date').value=selDate||fmt(today);
   document.getElementById('in-time').value='';
   document.getElementById('in-cat').value='work';
@@ -628,14 +637,41 @@ function openModal(){
   document.querySelectorAll('.sound-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.s===selSoundVal);});
   document.getElementById('modal-overlay').classList.add('open');
 }
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function openEdit(id){
+  var r=reminders.filter(function(x){return x.id===id;})[0];
+  if(!r)return;
+  editingId=id;
+  document.getElementById('modal-title').textContent='עריכת תזכורת';
+  document.getElementById('btn-save').textContent='עדכן';
+  document.getElementById('in-title').value=r.title;
+  document.getElementById('in-title').style.borderColor='#ccc';
+  document.getElementById('in-date').value=r.date;
+  document.getElementById('in-time').value=r.time||'';
+  document.getElementById('in-cat').value=r.cat;
+  document.getElementById('in-notif').value=r.notifMin;
+  document.getElementById('in-notes').value=r.notes||'';
+  document.getElementById('in-vol').value=r.vol||80;
+  document.getElementById('vol-out').textContent=(r.vol||80)+'%';
+  selColorVal=r.color;selRecurVal=r.recur;selSoundVal=r.sound;
+  document.querySelectorAll('.col-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.c===selColorVal);});
+  document.querySelectorAll('.tag-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.r===selRecurVal);});
+  document.querySelectorAll('.sound-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.s===selSoundVal);});
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){editingId=null;document.getElementById('modal-overlay').classList.remove('open');}
 function selColor(el){document.querySelectorAll('.col-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');selColorVal=el.dataset.c;}
 function selTag(el){el.closest('.tag-opts').querySelectorAll('.tag-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');selRecurVal=el.dataset.r;}
 function selSound(el){document.querySelectorAll('.sound-opt').forEach(function(o){o.classList.remove('sel');});el.classList.add('sel');selSoundVal=el.dataset.s;if(selSoundVal!=='none')playSound(selSoundVal,parseInt(document.getElementById('in-vol').value)||80);}
 function saveReminder(){
   var title=document.getElementById('in-title').value.trim(),date=document.getElementById('in-date').value;
   if(!title||!date){document.getElementById('in-title').style.borderColor='#E24B4A';return;}
-  reminders.push({id:nextId++,title:title,date:date,time:document.getElementById('in-time').value,color:selColorVal,cat:document.getElementById('in-cat').value,recur:selRecurVal,notifMin:parseInt(document.getElementById('in-notif').value)||0,notes:document.getElementById('in-notes').value,sound:selSoundVal,vol:parseInt(document.getElementById('in-vol').value)||80});
+  var data={title:title,date:date,time:document.getElementById('in-time').value,color:selColorVal,cat:document.getElementById('in-cat').value,recur:selRecurVal,notifMin:parseInt(document.getElementById('in-notif').value)||0,notes:document.getElementById('in-notes').value,sound:selSoundVal,vol:parseInt(document.getElementById('in-vol').value)||80};
+  if(editingId!==null){
+    reminders=reminders.map(function(r){return r.id===editingId?Object.assign({},r,data):r;});
+  }else{
+    reminders.push(Object.assign({id:nextId++},data));
+  }
+  editingId=null;
   saveLS();
   closeModal();if(selDate)selectDay(selDate);render();
 }
