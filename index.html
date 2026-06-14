@@ -247,7 +247,7 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
 
 <div class="copyright-bar">
   <div class="banner-title">לוח שנה ותזכורות &mdash; אבידן קוטאי</div>
-  <div class="banner-copy">© כל הזכויות שמורות לאבידן קוטאי <span style="opacity:.7">· גרסה 13/06 17:45</span></div>
+  <div class="banner-copy">© כל הזכויות שמורות לאבידן קוטאי <span style="opacity:.7">· גרסה 13/06 18:15</span></div>
 </div>
 
 <div class="wrap">
@@ -260,6 +260,7 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
     <label class="file-lbl">&#128228; שחזור<input type="file" accept=".json" onchange="importData(event)" style="display:none" /></label>
     <button class="tbtn reset-btn" onclick="openReset()">&#128465; מחיקה</button>
     <button class="tbtn" onclick="openTrash()">&#9851; פח</button>
+    <button class="tbtn" onclick="openWa()">&#128241; וואטסאפ</button>
     <button class="tbtn" onclick="lockNow()">&#128274; נעל</button>
     <button class="tbtn" id="hol-btn" onclick="toggleHolidays()">&#10024; חגים: פעיל</button>
     <select class="tbtn" id="city-sel" onchange="changeCity(this.value)" title="עיר לזמני שבת וחג">
@@ -305,6 +306,29 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
 </div>
 
 <!-- Modal -->
+<div class="overlay-bg" id="wa-overlay">
+  <div class="modal" style="width:min(94vw,400px)">
+    <div class="modal-title">&#128241; התראות בוואטסאפ</div>
+    <div style="font-size:11px;color:#888;margin-top:-6px">קבל התראות גם לוואטסאפ דרך השירות החינמי CallMeBot. דרושה הגדרה חד-פעמית (ראה למטה).</div>
+    <label class="lock-remember" style="justify-content:flex-start;margin:10px 0 4px"><input type="checkbox" id="wa-enabled" /> הפעל התראות בוואטסאפ</label>
+    <div class="fg"><label class="flabel">מספר טלפון (כולל קידומת מדינה, ספרות בלבד)</label><input class="finput" id="wa-phone" inputmode="tel" placeholder="972501234567" /></div>
+    <div class="fg"><label class="flabel">מפתח CallMeBot (apikey)</label><input class="finput" id="wa-key" placeholder="123456" /></div>
+    <div style="font-size:11px;color:#555;background:#f7f6f2;border-radius:8px;padding:9px;line-height:1.7">
+      <b>הגדרה חד-פעמית (בטלפון):</b><br>
+      1. היכנס לאתר callmebot.com (עמוד "Free API to Send WhatsApp") וקח משם את <b>מספר הבוט</b> העדכני.<br>
+      2. שמור אותו באנשי קשר, ושלח לו בוואטסאפ: <b>I allow callmebot to send me messages</b><br>
+      3. תקבל הודעה עם <b>apikey</b> — הזן אותו כאן יחד עם מספר הטלפון שלך, ולחץ שמור.
+    </div>
+    <div class="modal-share">
+      <button type="button" class="share-btn wa" onclick="waTest()">&#128241; שלח הודעת בדיקה</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeWa()">ביטול</button>
+      <button class="btn-save" onclick="saveWa()">שמור</button>
+    </div>
+  </div>
+</div>
+
 <div class="overlay-bg" id="trash-overlay">
   <div class="modal" style="width:min(92vw,380px)">
     <div class="modal-title">&#9851; פח אשפה</div>
@@ -553,6 +577,24 @@ function saveDayNote(ds,h,val){
   try{localStorage.setItem('avidan-cal-daynotes',JSON.stringify(dayNotes));}catch(e){}
 }
 function autoGrowNote(t){t.style.height='auto';t.style.height=t.scrollHeight+'px';}
+/* ===== הגדרות התראות בוואטסאפ (CallMeBot) ===== */
+var waSettings={enabled:false,phone:'',key:''};
+try{waSettings=Object.assign(waSettings,JSON.parse(localStorage.getItem('avidan-cal-wa'))||{});}catch(e){}
+function openWa(){document.getElementById('wa-enabled').checked=!!waSettings.enabled;document.getElementById('wa-phone').value=waSettings.phone||'';document.getElementById('wa-key').value=waSettings.key||'';document.getElementById('wa-overlay').classList.add('open');}
+function closeWa(){document.getElementById('wa-overlay').classList.remove('open');}
+function saveWa(){
+  waSettings={enabled:document.getElementById('wa-enabled').checked,phone:document.getElementById('wa-phone').value.replace(/[^0-9]/g,''),key:document.getElementById('wa-key').value.trim()};
+  try{localStorage.setItem('avidan-cal-wa',JSON.stringify(waSettings));}catch(e){}
+  if(typeof syncPush==='function')syncPush();
+  closeWa();if(typeof toast==='function')toast('הגדרות וואטסאפ נשמרו ✓');
+}
+function waTest(){
+  var phone=document.getElementById('wa-phone').value.replace(/[^0-9]/g,'');
+  var key=document.getElementById('wa-key').value.trim();
+  if(!phone||!key){if(typeof toast==='function')toast('הזן מספר טלפון ומפתח קודם');return;}
+  var url='https://api.callmebot.com/whatsapp.php?phone='+encodeURIComponent(phone)+'&text='+encodeURIComponent('בדיקה ✓ הלוח של אבידן מחובר לוואטסאפ')+'&apikey='+encodeURIComponent(key);
+  fetch(url,{mode:'no-cors'}).then(function(){if(typeof toast==='function')toast('נשלחה הודעת בדיקה — בדוק בוואטסאפ');}).catch(function(){if(typeof toast==='function')toast('שגיאה בשליחה');});
+}
 /* ===== פח אשפה לתזכורות שנמחקו (נשמר במכשיר 30 יום) ===== */
 var trash=[];
 try{trash=JSON.parse(localStorage.getItem('avidan-cal-trash'))||[];}catch(e){trash=[];}
@@ -807,6 +849,7 @@ async function syncPush(){
     try{var reg=await navigator.serviceWorker.ready;pushSub=await reg.pushManager.getSubscription();}catch(e){}
   }
   var body={reminders:reminders,nextId:nextId,tz:Intl.DateTimeFormat().resolvedOptions().timeZone};
+  if(typeof waSettings!=='undefined')body.wa=waSettings;
   if(pushSub)body.subscription=pushSub;
   try{
     await fetch(PUSH_WORKER_URL+'/save',{method:'POST',headers:{'Content-Type':'application/json'},

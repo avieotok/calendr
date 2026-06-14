@@ -17,23 +17,44 @@ export default {
     const url = new URL(request.url);
     const cors = {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type'
     };
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
+    // שמירה: רשימת תזכורות משותפת לכל המכשירים + רישום מינוי ההתראות של המכשיר
     if (url.pathname === '/save' && request.method === 'POST') {
       try {
         const data = await request.json();
-        if (!data.subscription || !data.subscription.endpoint) return json({ error: 'no subscription' }, 400, cors);
-        const id = await hashEndpoint(data.subscription.endpoint);
-        await env.CAL.put('sub:' + id, JSON.stringify({
-          subscription: data.subscription,
-          reminders: data.reminders || [],
-          tz: data.tz || 'Asia/Jerusalem',
-          updated: Date.now()
-        }));
-        return json({ ok: true, id }, 200, cors);
+        // הרשימה המשותפת = מקור האמת. כל מכשיר כותב אליה.
+        if (Array.isArray(data.reminders)) {
+          let prev = {}; try { prev = JSON.parse(await env.CAL.get('shared:reminders')) || {}; } catch (e) {}
+          await env.CAL.put('shared:reminders', JSON.stringify({
+            reminders: data.reminders,
+            nextId: data.nextId || 0,
+            wa: (data.wa !== undefined ? data.wa : prev.wa) || null,
+            updated: Date.now()
+          }));
+        }
+        // רישום/עדכון מינוי ההתראות של המכשיר הזה (אם נשלח)
+        if (data.subscription && data.subscription.endpoint) {
+          const id = await hashEndpoint(data.subscription.endpoint);
+          await env.CAL.put('sub:' + id, JSON.stringify({
+            subscription: data.subscription,
+            tz: data.tz || 'Asia/Jerusalem',
+            updated: Date.now()
+          }));
+        }
+        return json({ ok: true }, 200, cors);
+      } catch (e) { return json({ error: String(e) }, 500, cors); }
+    }
+
+    // טעינה: כל מכשיר מושך את הרשימה המשותפת
+    if (url.pathname === '/load') {
+      try {
+        const raw = await env.CAL.get('shared:reminders');
+        if (!raw) return json({ reminders: [], nextId: 0 }, 200, cors);
+        return new Response(raw, { status: 200, headers: Object.assign({ 'Content-Type': 'application/json' }, cors) });
       } catch (e) { return json({ error: String(e) }, 500, cors); }
     }
 
@@ -57,50 +78,102 @@ export default {
   }
 };
 
-/* ===== בדיקת תזכורות שהגיע זמנן (רץ כל דקה) ===== */
+/* ===== בדיקת תזכורות שהגיע זמנן (רץ כל דקה) =====
+   קורא את הרשימה המשותפת פעם אחת, ושולח כל תזכורת שהגיע זמנה
+   לכל המכשירים הרשומים (Mac, Windows, טלפון...). */
 async function runChecks(env) {
-  const list = await env.CAL.list({ prefix: 'sub:' });
-  for (const k of list.keys) {
+  const sharedRaw = await env.CAL.get('shared:reminders');
+  if (!sharedRaw) return;
+  let shared; try { shared = JSON.parse(sharedRaw); } catch (e) { return; }
+  const reminders = shared.reminders || [];
+  if (!reminders.length) return;
+  const wa = shared.wa || null;
+
+  // ===== שליחת וואטסאפ (פעם אחת לכל תזכורת, ללא תלות במכשירים) =====
+  if (wa && wa.enabled && wa.phone && wa.key) {
+    const p = nowParts('Asia/Jerusalem');
+    const nowNaive = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute);
+    for (const r of reminders) {
+      if (!r.time) continue;
+      const tp = r.time.split(':'); const hh = +tp[0], mm = +tp[1];
+      const offsets = [r.notifMin || 0];
+      if (r.notifMin2 != null && r.notifMin2 !== '' && (+r.notifMin2) !== (r.notifMin || 0)) offsets.push(+r.notifMin2);
+      for (let dayOff = -1; dayOff <= 2; dayOff++) {
+        const d = new Date(Date.UTC(+p.year, +p.month - 1, +p.day + dayOff));
+        const Y = d.getUTCFullYear(), M = d.getUTCMonth() + 1, D = d.getUTCDate();
+        if (!isOccurrence(r, Y, M, D)) continue;
+        const occNaive = Date.UTC(Y, M - 1, D, hh, mm);
+        for (const nm of offsets) {
+          const notifyNaive = occNaive - nm * 60000;
+          const diff = nowNaive - notifyNaive;
+          if (diff >= 0 && diff < 3 * 60000) {
+            const fid = 'fired:wa:' + r.id + ':' + notifyNaive;
+            if (await env.CAL.get(fid)) continue;
+            await env.CAL.put(fid, '1', { expirationTtl: 600 });
+            await sendWhatsApp(wa.phone, '🔔 ' + (r.title || 'תזכורת') + ' — ' + notifBody(r, nm), wa.key);
+          }
+        }
+      }
+    }
+  }
+
+  // איסוף כל המכשירים הרשומים
+  const subList = await env.CAL.list({ prefix: 'sub:' });
+  const devices = [];
+  for (const k of subList.keys) {
     const raw = await env.CAL.get(k.name);
     if (!raw) continue;
     let rec; try { rec = JSON.parse(raw); } catch (e) { continue; }
-    const tz = rec.tz || 'Asia/Jerusalem';
-    const reminders = rec.reminders || [];
-    const sub = rec.subscription;
+    if (rec.subscription) devices.push({ key: k.name, sub: rec.subscription, tz: rec.tz || 'Asia/Jerusalem' });
+  }
+  if (!devices.length) return;
+
+  for (const dev of devices) {
+    const tz = dev.tz;
     const p = nowParts(tz);
     const nowNaive = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute);
 
     for (const r of reminders) {
       if (!r.time) continue;
       const tp = r.time.split(':'); const hh = +tp[0], mm = +tp[1];
-      const notifMin = r.notifMin || 0;
-      for (let off = -1; off <= 2; off++) {
-        const d = new Date(Date.UTC(+p.year, +p.month - 1, +p.day + off));
+      const offsets = [r.notifMin || 0];
+      if (r.notifMin2 != null && r.notifMin2 !== '' && (+r.notifMin2) !== (r.notifMin || 0)) offsets.push(+r.notifMin2);
+      for (let dayOff = -1; dayOff <= 2; dayOff++) {
+        const d = new Date(Date.UTC(+p.year, +p.month - 1, +p.day + dayOff));
         const Y = d.getUTCFullYear(), M = d.getUTCMonth() + 1, D = d.getUTCDate();
         if (!isOccurrence(r, Y, M, D)) continue;
         const occNaive = Date.UTC(Y, M - 1, D, hh, mm);
-        const notifyNaive = occNaive - notifMin * 60000;
-        const diff = nowNaive - notifyNaive;
-        if (diff >= 0 && diff < 3 * 60000) {
-          const fid = 'fired:' + k.name.slice(4) + ':' + r.id + ':' + notifyNaive;
-          if (await env.CAL.get(fid)) continue;
-          await env.CAL.put(fid, '1', { expirationTtl: 600 });
-          const status = await sendPush(sub, {
-            title: r.title || 'תזכורת',
-            body: notifBody(r, notifMin),
-            tag: 'r' + r.id
-          }, env).catch(() => 0);
-          if (status === 404 || status === 410) { await env.CAL.delete(k.name); }
+        for (const nm of offsets) {
+          const notifyNaive = occNaive - nm * 60000;
+          const diff = nowNaive - notifyNaive;
+          if (diff >= 0 && diff < 3 * 60000) {
+            const fid = 'fired:' + dev.key.slice(4) + ':' + r.id + ':' + notifyNaive;
+            if (await env.CAL.get(fid)) continue;
+            await env.CAL.put(fid, '1', { expirationTtl: 600 });
+            const status = await sendPush(dev.sub, {
+              title: r.title || 'תזכורת',
+              body: notifBody(r, nm),
+              tag: 'r' + r.id + '-' + nm
+            }, env).catch(() => 0);
+            if (status === 404 || status === 410) { await env.CAL.delete(dev.key); }
+          }
         }
       }
     }
   }
 }
 
+async function sendWhatsApp(phone, text, key) {
+  const url = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(phone) +
+    '&text=' + encodeURIComponent(text) + '&apikey=' + encodeURIComponent(key);
+  try { await fetch(url); } catch (e) {}
+}
 function notifBody(r, notifMin) {
   let parts = [];
-  if (notifMin >= 1440) parts.push('מחר');
-  else if (notifMin > 0) parts.push('בעוד ' + (notifMin >= 60 ? (notifMin / 60) + ' שעות' : notifMin + ' דקות'));
+  if (notifMin >= 2880) parts.push('בעוד יומיים');
+  else if (notifMin >= 1440) parts.push('מחר');
+  else if (notifMin >= 60) parts.push('בעוד ' + (notifMin / 60) + ' שעות');
+  else if (notifMin > 0) parts.push('בעוד ' + notifMin + ' דקות');
   if (r.time) parts.push('בשעה ' + r.time);
   if (r.notes) parts.push(r.notes);
   return parts.join(' · ') || 'תזכורת קרובה';
