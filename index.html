@@ -247,7 +247,7 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:18px}
 
 <div class="copyright-bar">
   <div class="banner-title">לוח שנה ותזכורות &mdash; אבידן קוטאי</div>
-  <div class="banner-copy">© כל הזכויות שמורות לאבידן קוטאי <span style="opacity:.7">· גרסה 13/06 18:15</span></div>
+  <div class="banner-copy">© כל הזכויות שמורות לאבידן קוטאי <span style="opacity:.7">· גרסה 14/06 14:20</span></div>
 </div>
 
 <div class="wrap">
@@ -629,7 +629,7 @@ function emptyTrash(){if(!trash.length)return;trash=[];persistTrash();renderTras
 setTimeout(function(){if(typeof loadFromServer==='function')loadFromServer();},800);
 setInterval(function(){if(typeof loadFromServer==='function')loadFromServer();},45000);
 /* ===== AUDIO ===== */
-function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended'){try{audioCtx.resume();}catch(e){}}return audioCtx;}
 function tone(ctx,freq,start,dur,vol,type){
   type=type||'sine';
   var o=ctx.createOscillator(),g=ctx.createGain();
@@ -665,6 +665,11 @@ function playSound(type,vol){
 var SINT={annoying:1400,beep:700,gentle:2400,alarm:1700};
 function startLoop(type,vol){if(type==='none')return;playSound(type,vol);soundTimer=setInterval(function(){playSound(type,vol);},SINT[type]||1500);}
 function stopLoop(){if(soundTimer){clearInterval(soundTimer);soundTimer=null;}}
+/* שחרור מנוע הקול בלחיצה הראשונה (דפדפנים חוסמים קול עד אינטראקציה) */
+(function(){
+  function unlockAudio(){try{var c=getCtx();if(c&&c.state==='suspended')c.resume();}catch(e){}}
+  ['pointerdown','click','keydown','touchstart'].forEach(function(ev){window.addEventListener(ev,unlockAudio,{passive:true});});
+})();
 
 /* ===== NOTIFICATION ===== */
 function showNotif(r,minsLeft){
